@@ -1,27 +1,32 @@
+
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
+# ✅ CSV 로딩 함수 (업로드 or GitHub fallback)
 @st.cache_data
 def load_data(file=None):
     if file is not None:
-        df = pd.read_csv(file)
+        df = pd.read_csv(file, encoding="utf-8-sig")  # 한글 인코딩
     else:
-        url = "https://raw.githubusercontent.com/Fairway220405/post-ipo-dashboard/refs/heads/main/sample.csv"  # 👉 네 링크로 교체
-        df = pd.read_csv(url)
+        url = "https://raw.githubusercontent.com/Fairway220405/post-ipo-dashboard/refs/heads/main/sample.csv"  # ← 너의 GitHub 경로로 수정
+        df = pd.read_csv(url, encoding="utf-8-sig")
     df = df.dropna(subset=["연도"])
     df["연도"] = df["연도"].astype(str)
     return df
 
+# ✅ 메인 대시보드 함수
 def main():
     st.set_page_config(page_title="POST-IPO 실적 분석", layout="wide")
     st.title("📊 POST-IPO 실적 대시보드")
 
     st.sidebar.header("📁 CSV 업로드")
-    file = st.sidebar.file_uploader("CSV 파일 업로드", type=["csv"])
+    file = st.sidebar.file_uploader("실적 CSV 파일을 업로드하거나 생략하면 샘플이 사용됩니다.", type=["csv"])
+
     df = load_data(file)
 
+    # ✅ label 없으면 자동 생성
     if "label" not in df.columns:
         df["label"] = df["연도"].astype(str) + "_" + df["보고서명"].str.replace("보고서", "").str.replace("분기", "Q")
 
@@ -34,7 +39,7 @@ def main():
     filtered = df[df["연도"].isin(selected_years) & df["보고서명"].isin(selected_reports)]
 
     if filtered.empty:
-        st.warning("❗ 조건에 맞는 데이터가 없습니다.")
+        st.warning("⚠ 조건에 맞는 데이터가 없습니다.")
         return
 
     st.subheader("📑 실적 요약")
@@ -55,5 +60,6 @@ def main():
         ax.set_xticklabels(plot_df["label"], rotation=45)
         st.pyplot(fig)
 
+# ✅ 실행
 if __name__ == "__main__":
     main()
