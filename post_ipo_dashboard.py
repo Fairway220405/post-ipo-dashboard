@@ -9,7 +9,7 @@ def load_data(file=None):
     if file is not None:
         df = pd.read_csv(file, encoding="utf-8-sig")
     else:
-        url = "https://raw.githubusercontent.com/Fairway220405/post-ipo-dashboard/refs/heads/main/sample.csv  # ← 여기를 실제 경로로 바꿔줘
+        url = "https://raw.githubusercontent.com/Fairway220405/post-ipo-dashboard/refs/heads/main/sample.csv"  # ← 여기를 실제 경로로 바꿔줘
         df = pd.read_csv(url, encoding="utf-8-sig")
 
     # ✅ 기본 정제
