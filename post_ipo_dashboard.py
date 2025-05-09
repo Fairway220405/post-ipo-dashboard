@@ -8,7 +8,7 @@ def load_data(file=None):
     if file is not None:
         df = pd.read_csv(file)
     else:
-        url = "https://raw.githubusercontent.com/YOUR_ID/YOUR_REPO/main/sample.csv"  # 👉 네 링크로 교체
+        url = "https://raw.githubusercontent.com/Fairway220405/post-ipo-dashboard/refs/heads/main/sample.csv"  # 👉 네 링크로 교체
         df = pd.read_csv(url)
     df = df.dropna(subset=["연도"])
     df["연도"] = df["연도"].astype(str)
