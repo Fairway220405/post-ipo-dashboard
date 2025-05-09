@@ -8,7 +8,7 @@ def load_data(file=None):
         df = pd.read_csv(file)
     else:
         # ✅ GitHub에서 자동으로 샘플 CSV 불러오기
-        url = "https://raw.githubusercontent.com/YOUR_GITHUB_ID/YOUR_REPO_NAME/main/sample.csv"
+        url = "https://raw.githubusercontent.com/Fairway220405/post-ipo-dashboard/refs/heads/main/sample.csv"
         df = pd.read_csv(url)
     df = df.dropna(subset=["연도"])
     df["연도"] = df["연도"].astype(str)
