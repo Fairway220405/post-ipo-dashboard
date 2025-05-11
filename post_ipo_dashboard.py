@@ -4,14 +4,19 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import matplotlib
 import platform
+import os
+import matplotlib.font_manager as fm
 
-# ✅ 한글 폰트 설정
-if platform.system() == 'Windows':
+# ✅ 한글 폰트 설정 (Streamlit Cloud 포함)
+if platform.system() == 'Linux':
+    if not os.path.exists("/usr/share/fonts/truetype/nanum"):
+        os.system("apt-get update && apt-get install -y fonts-nanum")
+        fm._rebuild()
+    matplotlib.rc('font', family='NanumGothic')
+elif platform.system() == 'Windows':
     matplotlib.rc('font', family='Malgun Gothic')
 elif platform.system() == 'Darwin':
     matplotlib.rc('font', family='AppleGothic')
-else:
-    matplotlib.rc('font', family='NanumGothic')
 
 matplotlib.rcParams['axes.unicode_minus'] = False
 
