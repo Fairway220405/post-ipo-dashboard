@@ -1,8 +1,9 @@
+import os
+import platform
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib
-import platform
 
 # ✅ 한글 폰트 설정
 if platform.system() == 'Windows':
@@ -13,8 +14,10 @@ else:
     matplotlib.rc('font', family='DejaVu Sans')
 matplotlib.rcParams['axes.unicode_minus'] = False
 
-# ✅ 데이터 로드 (GitHub에 sample.csv 파일이 반드시 있어야 함)
-df = pd.read_csv("sample.csv")
+# ✅ 바탕화면 경로로 CSV 로드
+desktop = os.path.join(os.path.expanduser("~"), "Desktop")
+csv_path = os.path.join(desktop, "sample.csv")  # 여기에 파일이 있어야 함
+df = pd.read_csv(csv_path)
 
 # 수치형 컬럼 변환
 for col in ['매출액', '영업이익', '당기순이익']:
