@@ -13,10 +13,10 @@ else:
     matplotlib.rc('font', family='DejaVu Sans')
 matplotlib.rcParams['axes.unicode_minus'] = False
 
-# ✅ 데이터 로드
-df = pd.read_csv("sample_eokwon.csv")
+# ✅ 데이터 로드 (GitHub에 sample.csv 파일이 반드시 있어야 함)
+df = pd.read_csv("sample.csv")
 
-# 수치형 변환 (혹시 모를 타입 오류 방지)
+# 수치형 컬럼 변환
 for col in ['매출액', '영업이익', '당기순이익']:
     df[col] = pd.to_numeric(df[col], errors='coerce')
 
