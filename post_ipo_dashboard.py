@@ -16,8 +16,8 @@ else:  # Linux 등
 # 마이너스 깨짐 방지
 matplotlib.rcParams['axes.unicode_minus'] = False
 
-# 샘플 CSV 로드 (파일명은 sample.csv 라고 가정)
-df = pd.read_csv("sample.csv")
+# 변경된 CSV 파일명 사용
+df = pd.read_csv("ipo_merged_with_yield.csv")
 
 # Streamlit 앱 시작
 st.title("📈 IPO 대시보드")
@@ -27,14 +27,14 @@ st.dataframe(df)
 
 st.subheader("종목별 수익률 시각화 예시")
 
-if '종목명' in df.columns and '수익률' in df.columns:
+if '회사명' in df.columns and '수익률' in df.columns:
     fig, ax = plt.subplots()
     df_sorted = df.sort_values(by='수익률', ascending=False)
-    ax.bar(df_sorted['종목명'], df_sorted['수익률'])
-    ax.set_xlabel("종목명")
+    ax.bar(df_sorted['회사명'], df_sorted['수익률'])
+    ax.set_xlabel("회사명")
     ax.set_ylabel("수익률 (%)")
     ax.set_title("공모주 수익률 비교")
     ax.tick_params(axis='x', rotation=45)
     st.pyplot(fig)
 else:
-    st.warning("'종목명'과 '수익률' 컬럼이 필요합니다. CSV 파일을 확인하세요.")
+    st.warning("'회사명'과 '수익률' 컬럼이 필요합니다. CSV 파일을 확인하세요.")
