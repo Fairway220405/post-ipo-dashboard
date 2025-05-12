@@ -3,7 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib
 import platform
-import os
 
 # ✅ 한글 폰트 설정
 if platform.system() == 'Windows':
@@ -15,10 +14,8 @@ else:
 
 matplotlib.rcParams['axes.unicode_minus'] = False
 
-# ✅ 바탕화면 경로에서 CSV 로드
-desktop = os.path.join(os.path.expanduser("~"), "Desktop")
-file_path = os.path.join(desktop, "ipo_merged_with_yield.csv")
-df = pd.read_csv(file_path)
+# ✅ CSV 파일 (동일 디렉토리에 업로드되어 있어야 함)
+df = pd.read_csv("ipo_merged_with_yield.csv")
 
 # ✅ 수치형 컬럼 정리
 for col in ['수익률', '매출액', '영업이익', '당기순이익']:
