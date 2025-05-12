@@ -1,26 +1,11 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib
-import platform
+import plotly.express as px
 
-# ✅ 한글 폰트 설정
-if platform.system() == 'Windows':
-    matplotlib.rc('font', family='Malgun Gothic')
-elif platform.system() == 'Darwin':
-    matplotlib.rc('font', family='AppleGothic')
-else:
-    matplotlib.rc('font', family='DejaVu Sans')
-matplotlib.rcParams['axes.unicode_minus'] = False
+# ✅ sample.csv 불러오기
+df = pd.read_csv("sample.csv")
 
-# ✅ sample.csv 불러오기 (같은 GitHub 폴더에 있어야 함)
-try:
-    df = pd.read_csv("sample.csv")
-except FileNotFoundError:
-    st.error("⚠️ sample.csv 파일을 찾을 수 없습니다. GitHub 저장소 루트에 sample.csv가 있는지 확인하세요.")
-    st.stop()
-
-# ✅ 수치형 컬럼 변환
+# 수치형 변환
 for col in ['매출액', '영업이익', '당기순이익']:
     df[col] = pd.to_numeric(df[col], errors='coerce')
 
@@ -40,11 +25,23 @@ col1.metric("매출액", f"{df_target['매출액'].iloc[0]:,.1f} 억원")
 col2.metric("영업이익", f"{df_target['영업이익'].iloc[0]:,.1f} 억원")
 col3.metric("당기순이익", f"{df_target['당기순이익'].iloc[0]:,.1f} 억원")
 
-# ✅ 실적 그래프
+# ✅ 실적 그래프 (한글 폰트 설정)
 st.subheader("📊 실적 구성 그래프")
-fig, ax = plt.subplots(figsize=(6, 4))
-bars = ['매출액', '영업이익', '당기순이익']
-values = [df_target[col].iloc[0] for col in bars]
-ax.bar(bars, values)
-ax.set_title(f"{selected_company} 주요 재무지표 (억원)")
-st.pyplot(fig)
+plot_df = pd.DataFrame({
+    "지표": ["매출액", "영업이익", "당기순이익"],
+    "금액": [df_target['매출액'].iloc[0], df_target['영업이익'].iloc[0], df_target['당기순이익'].iloc[0]]
+})
+
+fig = px.bar(plot_df, x="지표", y="금액", text="금액",
+             title=f"{selected_company} 주요 재무지표 (억원)", height=400)
+
+fig.update_traces(texttemplate='%{text:.1f}', textposition='outside')
+fig.update_layout(
+    font=dict(
+        family="Arial, NanumGothic, Malgun Gothic, AppleGothic, sans-serif"  # 한글 폰트 후보들
+    ),
+    uniformtext_minsize=8,
+    uniformtext_mode='hide'
+)
+
+st.plotly_chart(fig)
